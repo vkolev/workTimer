@@ -4,18 +4,22 @@ import java.util.Date;
 import org.fusesource.jansi.AnsiConsole;
 import static org.fusesource.jansi.Ansi.*;
 
+
 /**
  * Hello world!
  *
  */
 public class App 
 {
+
+    private static final String VERSION_NUMBER = "v1.0";
+
     public static void main( String[] args )
     {
 
         AnsiConsole.systemInstall();
 
-        System.out.println(ansi().render("@|blue,bold \t\tWorkTime v.1.0 |@"));
+        System.out.println(ansi().render("@|blue,bold \t\tWorkTime " + VERSION_NUMBER + " |@"));
         System.out.println(ansi().render("@|blue,bold ============================================= |@ \n"));
         if (args.length == 1) {
             try {
@@ -23,10 +27,10 @@ public class App
                 Date date = new Date();
                 switch (command) {
                     case "start":
-                        System.out.println(ansi().render("@|bold,green Starting at: |@") + date.toString());
+                        System.out.println(ansi().render("@|bold,green Starting at: |@") + date.toString() + "\n");
                         break;
                     case "stop":
-                        System.out.println(ansi().render("@|bold,green Stopped at: |@") + date.toString());
+                        System.out.println(ansi().render("@|bold,green Stopped at: |@") + date.toString() + "\n");
                         break;
                     case "list":
                         System.out.println(ansi().render("@|bold,red [ERROR]: |@  You must specify a month when using the @|bold,white list |@ command."));
@@ -34,8 +38,11 @@ public class App
                     case "income":
                         System.out.println(ansi().render("@|bold,red [ERROR]: |@  A month and a rate for using the @|bold,white income |@ command.."));
                         break;
+                    case "help":
+                        printUsage();
+                        break;
                     default:
-                        System.out.println("Unknown command!");
+                        printUsage();
                 }
             } catch (Exception e) {
                 System.out.println("An Exception accured!" + e.getLocalizedMessage());
@@ -70,9 +77,23 @@ public class App
         }
 
         if (args.length < 1 || args.length > 3) {
-            System.out.println("You should see the usage here ...");
+            printUsage();
         }
 
         AnsiConsole.systemUninstall();
+    }
+
+    private static void printUsage() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("start\t\t\t- Starts a new day/time for the current day of the month\n");
+        sb.append("stop\t\t\t- Stops the day/time for the current day of the month\n");
+        sb.append("list <month>\t\t- Lists the days you worked for the choosen month\n");
+        sb.append("income <month> <rate>\t- Calculates the income for the choosen month\n");
+        sb.append("\n");
+        sb.append("<month> can only be a number between 1 and 12\n");
+        sb.append("<income> can only be a decimal number\n\n");
+
+        System.out.print(sb.toString());
+
     }
 }
