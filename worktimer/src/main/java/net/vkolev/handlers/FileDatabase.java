@@ -45,6 +45,7 @@ public class FileDatabase {
                     System.out.println(ansi().render("@|bold,yellow [NOTICE] |@ You have already started the day!"));
                     isStarted = true;
                     result = false;
+                    break;
                 }
             }
             if (!isStarted) {
@@ -54,6 +55,7 @@ public class FileDatabase {
                     result = false;
                 }
             }
+            scanner.close();
         } catch (FileNotFoundException fne) {
             result = false;
         }
@@ -74,7 +76,7 @@ public class FileDatabase {
                 String line = scanner.nextLine();
                 lineNum++;
                 if (line.startsWith(currentDate)) {
-                    if(line.split(" :: ").length == 0) {
+                    if(line.split(" :: ").length == 1) {
                         StringBuilder sb = new StringBuilder();
                         sb.append(line);
                         sb.append(" :: ");
@@ -84,6 +86,7 @@ public class FileDatabase {
                         sb.append(System.lineSeparator());
                         line.replaceAll(line, sb.toString());
                         newFile.append(sb.toString());
+                        scanner.close();
                         overWriteFile(filePath, newFile.toString());
                         break;
                     } else {
