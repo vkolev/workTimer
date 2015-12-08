@@ -22,10 +22,11 @@ public class App
         AnsiConsole.systemInstall();
 
         Utils utils = Utils.getInstance();
-        System.out.println(utils.getAppDirectory());
 
-        System.out.println(ansi().render("@|blue,bold \t\tWorkTime " + VERSION_NUMBER + " |@"));
-        System.out.println(ansi().render("@|blue,bold ============================================= |@ \n"));
+
+        System.out.println(ansi().render("@|blue,bold \t\t\tWorkTime " + VERSION_NUMBER + " |@"));
+        System.out.println(ansi().render("@|blue,bold ================================================================== |@"));
+        System.out.println(ansi().render("@|italic,cyan Current file: |@ @|italic,white " + utils.getCurrentFile() + "|@ \n"));
         if (args.length == 1) {
             try {
                 String command = args[0].toString();
