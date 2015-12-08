@@ -1,6 +1,8 @@
 package net.vkolev;
 
 import java.util.Date;
+
+import net.vkolev.utils.Utils;
 import org.fusesource.jansi.AnsiConsole;
 import static org.fusesource.jansi.Ansi.*;
 
@@ -18,6 +20,9 @@ public class App
     {
 
         AnsiConsole.systemInstall();
+
+        Utils utils = Utils.getInstance();
+        System.out.println(utils.getAppDirectory());
 
         System.out.println(ansi().render("@|blue,bold \t\tWorkTime " + VERSION_NUMBER + " |@"));
         System.out.println(ansi().render("@|blue,bold ============================================= |@ \n"));
