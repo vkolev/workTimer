@@ -2,6 +2,8 @@ package net.vkolev;
 
 import java.util.Date;
 
+import net.vkolev.commands.Starter;
+import net.vkolev.commands.Stopper;
 import net.vkolev.utils.Utils;
 import org.fusesource.jansi.AnsiConsole;
 import static org.fusesource.jansi.Ansi.*;
@@ -33,10 +35,16 @@ public class App
                 Date date = new Date();
                 switch (command) {
                     case "start":
-                        System.out.println(ansi().render("@|bold,green Starting at: |@") + date.toString() + "\n");
+                        Starter starter = new Starter(utils.getCurrentFile(), new Date());
+                        if(starter.startDay()) {
+                            System.out.println(ansi().render("@|bold,green Starting at: |@") + date.toString() + "\n");
+                        }
                         break;
                     case "stop":
-                        System.out.println(ansi().render("@|bold,green Stopped at: |@") + date.toString() + "\n");
+                        Stopper stopper = new Stopper(utils.getCurrentFile(), new Date());
+                        if(stopper.stopDay()) {
+                            System.out.println(ansi().render("@|bold,green Stopped at: |@") + date.toString() + "\n");
+                        }
                         break;
                     case "list":
                         System.out.println(ansi().render("@|bold,red [ERROR]: |@  You must specify a month when using the @|bold,white list |@ command."));

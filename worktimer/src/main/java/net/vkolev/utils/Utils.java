@@ -2,12 +2,20 @@ package net.vkolev.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
 /**
  * Created by vlado on 08.12.15.
  */
 public class Utils {
+
+    static final int MINUTES_PER_HOUR = 60;
+    static final int SECONDS_PER_MINUTE = 60;
+    static final int SECONDS_PER_HOUR = SECONDS_PER_MINUTE * MINUTES_PER_HOUR;
 
     private static Utils instance = null;
 
@@ -104,5 +112,26 @@ public class Utils {
         if(!newPath.exists()) {
             newPath.mkdirs();
         }
+    }
+
+    public String getDifference(String line, String timeLog) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy-HH:mm");
+        LocalDateTime start = LocalDateTime.parse(line, formatter);
+        LocalDateTime stop = LocalDateTime.parse(timeLog, formatter);
+        Duration period = Duration.between(start, stop);
+
+        long seconds = period.getSeconds();
+        long hours = seconds / SECONDS_PER_HOUR;
+        long minutes = ((seconds % SECONDS_PER_HOUR) / SECONDS_PER_MINUTE);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(hours);
+        sb.append(":");
+        sb.append(String.format("%02d", minutes));
+
+        System.out.println(sb.toString());
+
+        return sb.toString();
+
     }
 }
