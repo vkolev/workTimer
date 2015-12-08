@@ -23,16 +23,16 @@ public class App
                 Date date = new Date();
                 switch (command) {
                     case "start":
-                        System.out.println(ansi().render("@|green Starting at: |@") + date.toString());
+                        System.out.println(ansi().render("@|bold,green Starting at: |@") + date.toString());
                         break;
                     case "stop":
-                        System.out.println(ansi().render("@|green Stopped at: |@") + date.toString());
+                        System.out.println(ansi().render("@|bold,green Stopped at: |@") + date.toString());
                         break;
                     case "list":
-                        System.out.println(ansi().render("@|red [ERROR]: |@  You must specify a month when using the list command."));
+                        System.out.println(ansi().render("@|bold,red [ERROR]: |@  You must specify a month when using the @|bold,white list |@ command."));
                         break;
                     case "income":
-                        System.out.println(ansi().render("@|red [ERROR]: |@  A month and a rate for using the income command.."));
+                        System.out.println(ansi().render("@|bold,red [ERROR]: |@  A month and a rate for using the @|bold,white income |@ command.."));
                         break;
                     default:
                         System.out.println("Unknown command!");
@@ -49,12 +49,12 @@ public class App
                     try {
                         int monthNumb = Integer.parseInt(args[1]);
                         if (monthNumb < 1 || monthNumb > 12) {
-                            System.out.println(ansi().render("@|red [ERROR]: |@ Month can be only a number between @|blue 1 |@ and @|blue 12 |@"));
+                            System.out.println(ansi().render("@|bold,red [ERROR]: |@ Month can be only a number between @|blue 1 |@ and @|blue 12 |@"));
                         } else {
                             System.out.println("You should get a list of day worked for month: " + monthNumb);
                         }
-                    } catch (Exception e) {
-                        System.out.println(e.getLocalizedMessage());
+                    } catch (NumberFormatException e) {
+                        System.out.println(ansi().render("@|bold,red [ERROR] |@ Invalid input for month! Accepted is only a number between 1 and 12"));
                     }
                     break;
                 case "income":
