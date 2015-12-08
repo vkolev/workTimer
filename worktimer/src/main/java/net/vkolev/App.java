@@ -26,7 +26,13 @@ public class App
                         System.out.println(ansi().render("@|green Starting at: |@") + date.toString());
                         break;
                     case "stop":
-                        System.out.println(ansi().render("@|red Stopped at: |@") + date.toString());
+                        System.out.println(ansi().render("@|green Stopped at: |@") + date.toString());
+                        break;
+                    case "list":
+                        System.out.println(ansi().render("@|red [ERROR]: |@  You must specify a month when using the list command."));
+                        break;
+                    case "income":
+                        System.out.println(ansi().render("@|red [ERROR]: |@  A month and a rate for using the income command.."));
                         break;
                     default:
                         System.out.println("Unknown command!");
@@ -36,10 +42,35 @@ public class App
             }
         }
         if (args.length > 1 && args.length <= 3) {
-            System.out.println("Command with options:");
-            for (int i = 0; i < args.length; i++) {
-                System.out.print(args[i] + " | ");
+            String command = args[0];
+            int argsSize = args.length;
+            switch (command) {
+                case "list":
+                    try {
+                        int monthNumb = Integer.parseInt(args[1]);
+                        if (monthNumb < 1 || monthNumb > 12) {
+                            System.out.println(ansi().render("@|red [ERROR]: |@ Month can be only a number between @|blue 1 |@ and @|blue 12 |@"));
+                        } else {
+                            System.out.println("You should get a list of day worked for month: " + monthNumb);
+                        }
+                    } catch (Exception e) {
+                        System.out.println(e.getLocalizedMessage());
+                    }
+                    break;
+                case "income":
+                    if (args.length != 3) {
+                        System.out.println("You must specify income rate!");
+                    } else {
+                        System.out.println("Income for month " + args[1] + " in rate " + args[2] + " EUR/month");
+                    }
+                    break;
+                default:
+                    System.out.println("Wrong arguments...");
             }
+        }
+
+        if (args.length < 1 || args.length > 3) {
+            System.out.println("You should see the usage here ...");
         }
 
         AnsiConsole.systemUninstall();
