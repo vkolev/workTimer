@@ -28,6 +28,15 @@ public class Utils {
         return instance;
     }
 
+    public int getCurrentYear() {
+        return Calendar.getInstance().get(Calendar.YEAR);
+    }
+
+    public boolean checkFileExists(String path) {
+        File test = new File(path);
+        return test.exists();
+    }
+
     public static String getCurrentFile() {
         String file_path = getCurrentYearDir();
         if (isWindows()) {
@@ -128,8 +137,6 @@ public class Utils {
         sb.append(hours);
         sb.append(":");
         sb.append(String.format("%02d", minutes));
-
-        System.out.println(sb.toString());
 
         return sb.toString();
 

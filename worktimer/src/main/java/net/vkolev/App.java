@@ -1,9 +1,9 @@
 package net.vkolev;
 
 import java.text.DateFormatSymbols;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
+import net.vkolev.commands.Lister;
 import net.vkolev.commands.Starter;
 import net.vkolev.commands.Stopper;
 import net.vkolev.utils.Utils;
@@ -49,7 +49,9 @@ public class App
                         }
                         break;
                     case "list":
-                        System.out.println(ansi().render("@|bold,red [ERROR]: |@  You must specify a month when using the @|bold,white list |@ command."));
+                        int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
+                        Lister lister = new Lister(month);
+                        lister.getMonthList();
                         break;
                     case "income":
                         System.out.println(ansi().render("@|bold,red [ERROR]: |@  A month and a rate for using the @|bold,white income |@ command.."));
@@ -74,20 +76,13 @@ public class App
                         if (monthNumb < 1 || monthNumb > 12) {
                             System.out.println(ansi().render("@|bold,red [ERROR]: |@ Month can be only a number between @|blue 1 |@ and @|blue 12 |@"));
                         } else {
-                            String format = "| %-17s | %-17s | %-15s |\n";
-                            String monthString = new DateFormatSymbols().getMonths()[monthNumb - 1];
-                            System.out.println("You should get a list of day worked for month: " + monthString + "\n");
-                            System.out.println("+---------------------------------------------------------+");
-                            System.out.println("|  Start            |  End              |  Hours          |");
-                            System.out.println("+---------------------------------------------------------+");
-                            System.out.print(String.format(format, "08.12.2015 23:40", "08.12.2015 23:50", "00:10"));
-                            System.out.print(String.format(format, "08.12.2015 23:40", "08.12.2015 23:50", "00:10"));
-                            System.out.print(String.format(format, "08.12.2015 23:40", "08.12.2015 23:50", "00:10"));
-                            System.out.print(String.format(format, "08.12.2015 23:40", "08.12.2015 23:50", "00:10"));
-                            System.out.print(String.format(format, "08.12.2015 23:40", "08.12.2015 23:50", "00:10"));
-                            System.out.println("+=========================================================+");
-                            System.out.println("|                                  Sum  |" + String.format(" %-15s |", "123:12"));
-                            System.out.println("+---------------------------------------------------------+");
+                            String filemonth = utils.getFileForMonth(monthNumb);
+                            if(utils.checkFileExists(filemonth)) {
+                                Lister lister = new Lister(monthNumb);
+                                lister.getMonthList();
+                            } else {
+                                System.out.println("@|bold,yellow [NOTICE] |@ There is no data for this month!");
+                            }
                         }
                     } catch (NumberFormatException e) {
                         System.out.println(ansi().render("@|bold,red [ERROR] |@ Invalid input for month! Accepted is only a number between 1 and 12"));
