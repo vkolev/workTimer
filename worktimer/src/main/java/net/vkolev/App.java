@@ -1,5 +1,7 @@
 package net.vkolev;
 
+import java.text.DateFormatSymbols;
+import java.util.Calendar;
 import java.util.Date;
 
 import net.vkolev.commands.Starter;
@@ -72,7 +74,20 @@ public class App
                         if (monthNumb < 1 || monthNumb > 12) {
                             System.out.println(ansi().render("@|bold,red [ERROR]: |@ Month can be only a number between @|blue 1 |@ and @|blue 12 |@"));
                         } else {
-                            System.out.println("You should get a list of day worked for month: " + monthNumb);
+                            String format = "| %-17s | %-17s | %-15s |\n";
+                            String monthString = new DateFormatSymbols().getMonths()[monthNumb - 1];
+                            System.out.println("You should get a list of day worked for month: " + monthString + "\n");
+                            System.out.println("+---------------------------------------------------------+");
+                            System.out.println("|  Start            |  End              |  Hours          |");
+                            System.out.println("+---------------------------------------------------------+");
+                            System.out.print(String.format(format, "08.12.2015 23:40", "08.12.2015 23:50", "00:10"));
+                            System.out.print(String.format(format, "08.12.2015 23:40", "08.12.2015 23:50", "00:10"));
+                            System.out.print(String.format(format, "08.12.2015 23:40", "08.12.2015 23:50", "00:10"));
+                            System.out.print(String.format(format, "08.12.2015 23:40", "08.12.2015 23:50", "00:10"));
+                            System.out.print(String.format(format, "08.12.2015 23:40", "08.12.2015 23:50", "00:10"));
+                            System.out.println("+=========================================================+");
+                            System.out.println("|                                  Sum  |" + String.format(" %-15s |", "123:12"));
+                            System.out.println("+---------------------------------------------------------+");
                         }
                     } catch (NumberFormatException e) {
                         System.out.println(ansi().render("@|bold,red [ERROR] |@ Invalid input for month! Accepted is only a number between 1 and 12"));

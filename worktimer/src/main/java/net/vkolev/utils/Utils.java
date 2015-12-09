@@ -134,4 +134,20 @@ public class Utils {
         return sb.toString();
 
     }
+
+    public String getFileForMonth(int month) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getCurrentYearDir());
+        if (isWindows()) {
+            sb.append("\\");
+        } else {
+            sb.append("/");
+        }
+        sb.append("time_");
+        sb.append(month);
+        sb.append(Calendar.getInstance().get(Calendar.YEAR));
+        sb.append(".txt");
+
+        return sb.toString();
+    }
 }

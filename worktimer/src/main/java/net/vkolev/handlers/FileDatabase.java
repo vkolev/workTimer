@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import static org.fusesource.jansi.Ansi.ansi;
@@ -75,7 +76,10 @@ public class FileDatabase {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 lineNum++;
-                if (line.startsWith(currentDate)) {
+                if (!line.startsWith(currentDate)) {
+                    newFile.append(line);
+                    newFile.append(System.lineSeparator());
+                } else {
                     if(line.split(" :: ").length == 1) {
                         StringBuilder sb = new StringBuilder();
                         sb.append(line);
@@ -93,9 +97,6 @@ public class FileDatabase {
                         System.out.println(ansi().render("@|bold,yellow [NOTICE] |@ You have already stopped the day!"));
                         result = false;
                     }
-                } else {
-                    System.out.println(ansi().render("@|bold,yellow [NOTICE] |@ You have not started the day!"));
-                    result = false;
                 }
             }
 
@@ -104,6 +105,25 @@ public class FileDatabase {
 
         }
         return result;
+    }
+
+
+    public HashMap<Integer, String[]> getDateList(String filePath) {
+        HashMap<Integer, String[]> map = new HashMap<>();
+        File listFile = new File(filePath);
+        try {
+            Scanner scanner = new Scanner(listFile);
+            int lineNum = 0;
+            while(scanner.hasNextLine()) {
+                lineNum++;
+                String line = scanner.nextLine();
+                String[] result = line.split(" :: ");
+                map.put(lineNum, result);
+            }
+        } catch (FileNotFoundException fne) {
+            //
+        }
+        return map;
     }
 
     private void overWriteFile(String filePath, String newFile) {
