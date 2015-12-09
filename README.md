@@ -1,12 +1,12 @@
 WorkTimer
-#########
+========
 
 A simple Java Application for storing your work hours in a flat-file
 database and calculating sum of your hours for a day, week, month year or
 your income for specified period of time.
 
 Usage
-=====
+-----
 
 * `start` - starts the timer uses the current date-time
 * `stop` - stops the timer uses the current date-time
@@ -15,9 +15,9 @@ Usage
 
 
 MIT License
-===========
+-----------
 
-Copyright (c) <2015> <Vladimir Kolev>
+Copyright (c) <2015> Vladimir Kolev
 
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
