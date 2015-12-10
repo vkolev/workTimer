@@ -13,6 +13,11 @@ Usage
 * `list <month>` - Shows the days your worked for specified month from current yyear as a table
 * `income <date> <hour_rate>` - Date could be MM.YYYY/YYYY/DD.MM.YYYY so the application will calculate your income. Rate is a decimal e.g. 16.00
 
+Screenshot
+----------
+
+![alt tag](https://raw.github.com/vkolev/workTimer/master/snapshot.png)
+
 
 MIT License
 -----------
