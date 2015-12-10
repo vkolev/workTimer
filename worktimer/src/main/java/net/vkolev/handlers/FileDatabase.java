@@ -10,6 +10,7 @@ import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 import static org.fusesource.jansi.Ansi.ansi;
@@ -109,7 +110,7 @@ public class FileDatabase {
 
 
     public HashMap<Integer, String[]> getDateList(String filePath) {
-        HashMap<Integer, String[]> map = new HashMap<>();
+        HashMap<Integer, String[]> map = new HashMap<Integer, String[]>();
         File listFile = new File(filePath);
         try {
             Scanner scanner = new Scanner(listFile);
@@ -136,5 +137,25 @@ public class FileDatabase {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public HashMap<Integer,String[]> getDateList(List<String> files) {
+        HashMap<Integer, String[]> map = new HashMap<Integer, String[]>();
+        for(int i = 0; i < files.size(); i++) {
+            File file = new File(files.get(i));
+            try {
+                Scanner scanner = new Scanner(file);
+                int lineNum = 0;
+                while (scanner.hasNextLine()) {
+                    lineNum++;
+                    String line = scanner.nextLine();
+                    String[] result = line.split(" :: ");
+                    map.put(lineNum, result);
+                }
+            } catch (FileNotFoundException fne) {
+                fne.printStackTrace();
+            }
+        }
+        return map;
     }
 }

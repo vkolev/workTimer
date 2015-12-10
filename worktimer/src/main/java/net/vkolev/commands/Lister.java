@@ -39,14 +39,18 @@ public class Lister {
         Iterator it = list.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry<Integer, String[]> pair = (Map.Entry)it.next();
-            sumHours += Integer.parseInt(pair.getValue()[2].split(":")[0]);
-            sumMinutes += Integer.parseInt(pair.getValue()[2].split(":")[1]);
-            System.out.print(String.format(format, pair.getValue()[0], pair.getValue()[1], pair.getValue()[2]));
+            if (pair.getValue().length <= 2) {
+                System.out.print(String.format(format, pair.getValue()[0], "still working", "00:00"));
+            } else {
+                sumHours += Integer.parseInt(pair.getValue()[2].split(":")[0]);
+                sumMinutes += Integer.parseInt(pair.getValue()[2].split(":")[1]);
+                System.out.print(String.format(format, pair.getValue()[0], pair.getValue()[1], pair.getValue()[2]));
+            }
         }
         System.out.println("+====================================================+");
         sumHours += sumMinutes / 60;
         sumMinutes = sumMinutes % 60;
-        String sum = sumHours + ":" + String.format("%02d", sumMinutes);
+        String sum = String.format("%02d",sumHours) + ":" + String.format("%02d", sumMinutes);
         System.out.println("|                                  Sum  |" + String.format(" %-10s |", sum));
         System.out.println("+----------------------------------------------------+\n");
     }

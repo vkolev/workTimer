@@ -1,12 +1,16 @@
 package net.vkolev.utils;
 
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
+import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.io.File;
 import java.io.IOException;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by vlado on 08.12.15.
@@ -116,6 +120,20 @@ public class Utils {
         return path;
     }
 
+    private static String getYearDir(int year) {
+        String path = getAppDirectory();
+        Calendar cal = Calendar.getInstance();
+        if (isWindows()) {
+            path =  path + "\\" + year;
+        } else {
+            path = path + "/" + year;
+        }
+
+        checkDir(path);
+
+        return path;
+    }
+
     private static void checkDir(String path) {
         File newPath = new File(path);
         if(!newPath.exists()) {
@@ -124,12 +142,12 @@ public class Utils {
     }
 
     public String getDifference(String line, String timeLog) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy-HH:mm");
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.MM.yyyy-HH:mm");
         LocalDateTime start = LocalDateTime.parse(line, formatter);
         LocalDateTime stop = LocalDateTime.parse(timeLog, formatter);
-        Duration period = Duration.between(start, stop);
+        Duration period = new Duration(start.toDateTime(), stop.toDateTime());
 
-        long seconds = period.getSeconds();
+        long seconds = period.getStandardSeconds();
         long hours = seconds / SECONDS_PER_HOUR;
         long minutes = ((seconds % SECONDS_PER_HOUR) / SECONDS_PER_MINUTE);
 
@@ -156,5 +174,34 @@ public class Utils {
         sb.append(".txt");
 
         return sb.toString();
+    }
+
+    public String getFileForMonthAndYear(int month, int year) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getYearDir(year));
+        if (isWindows()) {
+            sb.append("\\");
+        } else {
+            sb.append("/");
+        }
+        sb.append("time_");
+        sb.append(month);
+        sb.append(year);
+        sb.append(".txt");
+
+        return sb.toString();
+    }
+
+    public List<String> getFilesForYear(int year) {
+        String path = getYearDir(year);
+        List<String> files = new ArrayList<String>();
+        File dir = new File(path);
+        File[] list = dir.listFiles();
+        for (int i = 0; i < list.length; i++) {
+            if (list[i].isFile()) {
+                files.add(list[i].getAbsolutePath());
+            }
+        }
+        return files;
     }
 }

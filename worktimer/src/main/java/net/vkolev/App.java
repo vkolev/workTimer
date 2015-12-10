@@ -1,14 +1,16 @@
 package net.vkolev;
 
-import java.text.DateFormatSymbols;
-import java.util.*;
-
+import net.vkolev.commands.Incomer;
 import net.vkolev.commands.Lister;
 import net.vkolev.commands.Starter;
 import net.vkolev.commands.Stopper;
 import net.vkolev.utils.Utils;
 import org.fusesource.jansi.AnsiConsole;
-import static org.fusesource.jansi.Ansi.*;
+
+import java.util.Calendar;
+import java.util.Date;
+
+import static org.fusesource.jansi.Ansi.ansi;
 
 
 /**
@@ -92,7 +94,10 @@ public class App
                     if (args.length != 3) {
                         System.out.println("You must specify income rate!");
                     } else {
-                        System.out.println("Income for month " + args[1] + " in rate " + args[2] + " EUR/month");
+                        String selectedDate = args[1];
+                        Double rate = Double.valueOf(args[2].toString());
+                        Incomer incomer = new Incomer(selectedDate, rate);
+                        incomer.calculateIncome();
                     }
                     break;
                 default:
