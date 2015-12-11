@@ -5,7 +5,9 @@ import net.vkolev.handlers.FileDatabase;
 import java.util.Date;
 
 /**
- * Created by vlado on 08.12.15.
+ * Stopper command to stop a working day
+ *
+ * @author Vladimir Kolev
  */
 public class Stopper {
 

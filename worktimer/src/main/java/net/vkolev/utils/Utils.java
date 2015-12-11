@@ -1,6 +1,5 @@
 package net.vkolev.utils;
 
-import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -11,17 +10,19 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Created by vlado on 08.12.15.
+ * Helper functions as singleton
+ *
+ * @author Vladimir Kolev
  */
 public class Utils {
 
-    static final int MINUTES_PER_HOUR = 60;
-    static final int SECONDS_PER_MINUTE = 60;
-    static final int SECONDS_PER_HOUR = SECONDS_PER_MINUTE * MINUTES_PER_HOUR;
+    private static final int MINUTES_PER_HOUR = 60;
+    private static final int SECONDS_PER_MINUTE = 60;
+    private static final int SECONDS_PER_HOUR = SECONDS_PER_MINUTE * MINUTES_PER_HOUR;
 
     private static Utils instance = null;
 
-    protected Utils() {}
+    private Utils() {}
 
     public static Utils getInstance() {
         if (instance == null) {
@@ -32,7 +33,7 @@ public class Utils {
 
     /**
      * Get's the current year
-     * @return
+     * @return the current year as Integer
      */
     public int getCurrentYear() {
         return Calendar.getInstance().get(Calendar.YEAR);
@@ -40,8 +41,8 @@ public class Utils {
 
     /**
      * Checks if a current path exists
-     * @param path
-     * @return
+     * @param path String path to a file
+     * @return boolean
      */
     public boolean checkFileExists(String path) {
         File test = new File(path);
@@ -50,7 +51,7 @@ public class Utils {
 
     /**
      * Gets the current file path
-     * @return
+     * @return current file as String
      */
     public static String getCurrentFile() {
         String file_path = getCurrentYearDir();
@@ -72,20 +73,20 @@ public class Utils {
 
     /**
      * Check if a path is existing file and if not - creates the file
-     * @param file_path
-     * @throws IOException
+     * @param file_path Path to a file as String
+     * @throws IOException if file can't be created
      */
     private static void checkFile(String file_path) throws IOException {
         File newFile = new File(file_path);
         if (!newFile.exists()) {
-            boolean result = newFile.createNewFile();
+            newFile.createNewFile();
         }
     }
 
     /**
      * Get the Application directory in the user.home
      * if directory doesn't exists it will be created.
-     * @return
+     * @return current path to Application directory as String
      */
     private static String getAppDirectory() {
         StringBuilder sb = new StringBuilder();
@@ -143,7 +144,6 @@ public class Utils {
 
     private static String getYearDir(int year) {
         String path = getAppDirectory();
-        Calendar cal = Calendar.getInstance();
         if (isWindows()) {
             path =  path + "\\" + year;
         } else {
@@ -165,9 +165,9 @@ public class Utils {
     /**
      * Calculates the datetime-difference in a line with startDate :: stopDate
      * The result is in human readable format HH:mm
-     * @param line
-     * @param timeLog
-     * @return
+     * @param line a String of the scanned line
+     * @param timeLog the stop Date
+     * @return Readable difference in format HH:mm
      */
     public String getDifference(String line, String timeLog) {
         DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.MM.yyyy-HH:mm");
@@ -190,8 +190,8 @@ public class Utils {
 
     /**
      * Gets the file for specified month
-     * @param month
-     * @return
+     * @param month Month as an Integer
+     * @return Path to the file
      */
     public String getFileForMonth(int month) {
         StringBuilder sb = new StringBuilder();
@@ -211,9 +211,9 @@ public class Utils {
 
     /**
      * Gets the file with specified month and year
-     * @param month
-     * @param year
-     * @return
+     * @param month Month as an Integer
+     * @param year Year as an Integer
+     * @return path to the file
      */
     public String getFileForMonthAndYear(int month, int year) {
         StringBuilder sb = new StringBuilder();
@@ -233,8 +233,8 @@ public class Utils {
 
     /**
      * Get a list of files for specified year
-     * @param year
-     * @return
+     * @param year Year as an Integer
+     * @return List of all files for that year
      */
     public List<String> getFilesForYear(int year) {
         String path = getYearDir(year);
@@ -252,20 +252,19 @@ public class Utils {
     /**
      * Calculates the income from date-time string in a list with
      * given income rate
-     * @param list
-     * @param rate
-     * @return
+     * @param list List of start-stop-hours
+     * @param rate current income rate per hour
+     * @return calculated total income for the given list
      */
     public double calculateIncome(HashMap<Integer, String[]> list, Double rate) {
         Iterator it = list.entrySet().iterator();
         int sumHours = 0;
         int sumMinutes = 0;
         while (it.hasNext()) {
-            Map.Entry<Integer, String[]> pair = (Map.Entry)it.next();
+            Map.Entry<Integer, String[]> pair = (Map.Entry<Integer, String[]>)it.next();
             if (pair.getValue().length == 3) {
                 sumHours += Integer.parseInt(pair.getValue()[2].split(":")[0]);
                 sumMinutes += Integer.parseInt(pair.getValue()[2].split(":")[1]);
-            } else {
             }
         }
         double income = 0.0;
@@ -278,9 +277,9 @@ public class Utils {
 
     /**
      * Calculates the income for the current working day
-     * @param line
-     * @param rate
-     * @return
+     * @param line line from a start-stop-hour list
+     * @param rate rate income per hour
+     * @return calculated total income
      */
     public double calculateIncome(String line, Double rate) {
         double income = 0.0;

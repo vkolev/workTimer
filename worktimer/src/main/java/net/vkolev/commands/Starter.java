@@ -5,7 +5,9 @@ import net.vkolev.handlers.FileDatabase;
 import java.util.Date;
 
 /**
- * Created by vlado on 08.12.15.
+ * Starter command to start a working day
+ *
+ * @author Vladimir Kolev
  */
 public class Starter {
 

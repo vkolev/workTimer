@@ -18,7 +18,7 @@ import static org.fusesource.jansi.Ansi.ansi;
  * Currently the app can be used to start and stop a working day,
  * calculate the income and list the worked days for a month.
  */
-public class App 
+class App
 {
 
     private static final String VERSION_NUMBER = "v1.0";
@@ -69,15 +69,14 @@ public class App
                         printUsage();
                 }
             } catch (Exception e) {
-                System.out.println("An Exception accured!" + e.getLocalizedMessage());
+                System.out.println("An Exception occur!" + e.getLocalizedMessage());
             }
         }
         if (args.length > 1 && args.length <= 3) {
             /*
-            Work with the multiargument commands like list|income
+            Work with the multi-argument commands like list|income
              */
             String command = args[0];
-            int argsSize = args.length;
             switch (command) {
                 case "list":
                     try {

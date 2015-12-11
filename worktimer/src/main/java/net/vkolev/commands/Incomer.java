@@ -8,7 +8,6 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.fusesource.jansi.Ansi.ansi;
 
@@ -41,18 +40,21 @@ public class Incomer {
             result = month_year.parseDateTime(selectedDate);
             type = "month";
         } catch (IllegalArgumentException ie) {
+            //ie.printStackTrace();
         }
          try {
              DateTimeFormatter day_month_year = DateTimeFormat.forPattern(DAY_MONTH_YEAR);
              result = day_month_year.parseDateTime(selectedDate);
              type = "day";
          } catch (IllegalArgumentException nie) {
+             //nie.printStackTrace();
          }
         try {
             DateTimeFormatter year = DateTimeFormat.forPattern(YEAR);
             result = year.parseDateTime(selectedDate);
             type = "year";
         } catch (IllegalArgumentException yie) {
+            //yie.printStackTrace();
         }
         if (result == null) {
             System.out.println(ansi().render("@|bold,red [ERROR] |@ Unsupported DateTime Format supplied!"));

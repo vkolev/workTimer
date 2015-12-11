@@ -19,13 +19,15 @@ import java.util.Scanner;
 import static org.fusesource.jansi.Ansi.ansi;
 
 /**
- * Created by vlado on 08.12.15.
+ * FileDatabase class to manage records in a flat file
+ *
+ * @author Vladimir Kolev
  */
 public class FileDatabase {
 
     private static FileDatabase instance = null;
 
-    protected FileDatabase() {}
+    private FileDatabase() {}
 
     public static FileDatabase getInstance() {
         if (instance == null) {
@@ -73,7 +75,6 @@ public class FileDatabase {
         try {
             Scanner scanner = new Scanner(workFile);
             StringBuilder newFile = new StringBuilder();
-            boolean isStarted = true;
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 if (!line.startsWith(currentDate)) {
@@ -140,8 +141,8 @@ public class FileDatabase {
 
     public HashMap<Integer,String[]> getDateList(List<String> files) {
         HashMap<Integer, String[]> map = new HashMap<Integer, String[]>();
-        for(int i = 0; i < files.size(); i++) {
-            File file = new File(files.get(i));
+        for (String file1 : files) {
+            File file = new File(file1);
             try {
                 Scanner scanner = new Scanner(file);
                 int lineNum = 0;
@@ -172,7 +173,7 @@ public class FileDatabase {
                 }
             }
         } catch (FileNotFoundException fne) {
-
+            fne.printStackTrace();
         }
         return line;
     }

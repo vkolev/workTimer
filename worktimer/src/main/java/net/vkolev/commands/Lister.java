@@ -11,7 +11,8 @@ import java.util.Map;
 import static org.fusesource.jansi.Ansi.ansi;
 
 /**
- * Created by vlado on 08.12.15.
+ * A Lister command to manage listing file contents
+ * @author Vladimir Kolev
  */
 public class Lister {
 
@@ -38,7 +39,7 @@ public class Lister {
         int sumMinutes = 0;
         Iterator it = list.entrySet().iterator();
         while (it.hasNext()) {
-            Map.Entry<Integer, String[]> pair = (Map.Entry)it.next();
+            Map.Entry<Integer, String[]> pair = (Map.Entry<Integer, String[]>)it.next();
             if (pair.getValue().length <= 2) {
                 System.out.print(String.format(format, pair.getValue()[0], "still working", "00:00"));
             } else {
