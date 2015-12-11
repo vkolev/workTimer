@@ -14,8 +14,9 @@ import static org.fusesource.jansi.Ansi.ansi;
 
 
 /**
- * Hello world!
- *
+ * workTimer is an app to keep track of your working hours.
+ * Currently the app can be used to start and stop a working day,
+ * calculate the income and list the worked days for a month.
  */
 public class App 
 {
@@ -34,6 +35,9 @@ public class App
         System.out.println(ansi().render("@|blue,bold ================================================================== |@"));
         System.out.println(ansi().render("@|italic,cyan Current file: |@ @|italic,white " + utils.getCurrentFile() + "|@ \n"));
         if (args.length == 1) {
+            /*
+            Work with the one word arguments like start|stop|list
+             */
             try {
                 String command = args[0].toString();
                 Date date = new Date();
@@ -69,6 +73,9 @@ public class App
             }
         }
         if (args.length > 1 && args.length <= 3) {
+            /*
+            Work with the multiargument commands like list|income
+             */
             String command = args[0];
             int argsSize = args.length;
             switch (command) {

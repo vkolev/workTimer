@@ -18,6 +18,16 @@ Screenshot
 
 ![alt tag](https://raw.github.com/vkolev/workTimer/master/snapshot.png)
 
+TODO
+----
+
+- [ ] Income calculations must be more clever (specially for DD.MM.YYY)
+- [ ] Income and List should accept a period too
+- [ ] Refactoring the FileDatabase class to be more generic (Interface)
+- [ ] FileDatabase should be replacable with a Database class
+- [ ] workTimer should be able to work with a configuration
+- [ ] Better handling of start and stop (pauses?!/twice a day)
+
 
 MIT License
 -----------

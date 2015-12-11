@@ -8,9 +8,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by vlado on 08.12.15.
@@ -32,15 +30,28 @@ public class Utils {
         return instance;
     }
 
+    /**
+     * Get's the current year
+     * @return
+     */
     public int getCurrentYear() {
         return Calendar.getInstance().get(Calendar.YEAR);
     }
 
+    /**
+     * Checks if a current path exists
+     * @param path
+     * @return
+     */
     public boolean checkFileExists(String path) {
         File test = new File(path);
         return test.exists();
     }
 
+    /**
+     * Gets the current file path
+     * @return
+     */
     public static String getCurrentFile() {
         String file_path = getCurrentYearDir();
         if (isWindows()) {
@@ -59,6 +70,11 @@ public class Utils {
         return file_path;
     }
 
+    /**
+     * Check if a path is existing file and if not - creates the file
+     * @param file_path
+     * @throws IOException
+     */
     private static void checkFile(String file_path) throws IOException {
         File newFile = new File(file_path);
         if (!newFile.exists()) {
@@ -66,6 +82,11 @@ public class Utils {
         }
     }
 
+    /**
+     * Get the Application directory in the user.home
+     * if directory doesn't exists it will be created.
+     * @return
+     */
     private static String getAppDirectory() {
         StringBuilder sb = new StringBuilder();
         sb.append(System.getProperty("user.home"));
@@ -141,6 +162,13 @@ public class Utils {
         }
     }
 
+    /**
+     * Calculates the datetime-difference in a line with startDate :: stopDate
+     * The result is in human readable format HH:mm
+     * @param line
+     * @param timeLog
+     * @return
+     */
     public String getDifference(String line, String timeLog) {
         DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.MM.yyyy-HH:mm");
         LocalDateTime start = LocalDateTime.parse(line, formatter);
@@ -160,6 +188,11 @@ public class Utils {
 
     }
 
+    /**
+     * Gets the file for specified month
+     * @param month
+     * @return
+     */
     public String getFileForMonth(int month) {
         StringBuilder sb = new StringBuilder();
         sb.append(getCurrentYearDir());
@@ -176,6 +209,12 @@ public class Utils {
         return sb.toString();
     }
 
+    /**
+     * Gets the file with specified month and year
+     * @param month
+     * @param year
+     * @return
+     */
     public String getFileForMonthAndYear(int month, int year) {
         StringBuilder sb = new StringBuilder();
         sb.append(getYearDir(year));
@@ -192,6 +231,11 @@ public class Utils {
         return sb.toString();
     }
 
+    /**
+     * Get a list of files for specified year
+     * @param year
+     * @return
+     */
     public List<String> getFilesForYear(int year) {
         String path = getYearDir(year);
         List<String> files = new ArrayList<String>();
@@ -203,5 +247,55 @@ public class Utils {
             }
         }
         return files;
+    }
+
+    /**
+     * Calculates the income from date-time string in a list with
+     * given income rate
+     * @param list
+     * @param rate
+     * @return
+     */
+    public double calculateIncome(HashMap<Integer, String[]> list, Double rate) {
+        Iterator it = list.entrySet().iterator();
+        int sumHours = 0;
+        int sumMinutes = 0;
+        while (it.hasNext()) {
+            Map.Entry<Integer, String[]> pair = (Map.Entry)it.next();
+            if (pair.getValue().length == 3) {
+                sumHours += Integer.parseInt(pair.getValue()[2].split(":")[0]);
+                sumMinutes += Integer.parseInt(pair.getValue()[2].split(":")[1]);
+            } else {
+            }
+        }
+        double income = 0.0;
+        income += sumHours * rate.doubleValue();
+        income += ((sumMinutes * 100.0) / 6000.0) * rate.doubleValue();
+
+        return income;
+
+    }
+
+    /**
+     * Calculates the income for the current working day
+     * @param line
+     * @param rate
+     * @return
+     */
+    public double calculateIncome(String line, Double rate) {
+        double income = 0.0;
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.MM.yyyy-HH:mm");
+        LocalDateTime startDate = LocalDateTime.parse(line, formatter);
+        LocalDateTime stopDate = new LocalDateTime();
+        Duration period = new Duration(startDate.toDateTime(), stopDate.toDateTime());
+
+        long seconds = period.getStandardSeconds();
+        long hours = seconds / SECONDS_PER_HOUR;
+        long minutes = ((seconds % SECONDS_PER_HOUR) / SECONDS_PER_MINUTE);
+
+        income += hours * rate.doubleValue();
+        income += ((minutes * 100.0) / 6000.0) * rate.doubleValue();
+
+        return income;
     }
 }

@@ -1,6 +1,9 @@
 package net.vkolev.handlers;
 
 import net.vkolev.utils.Utils;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -38,11 +41,9 @@ public class FileDatabase {
         String timeLog = new SimpleDateFormat("dd.MM.yyyy-HH:mm").format(startDate);
         try {
             Scanner scanner = new Scanner(workFile);
-            int lineNum = 0;
             boolean isStarted = false;
             while(scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                lineNum++;
                 if(line.startsWith(currentDate)) {
                     System.out.println(ansi().render("@|bold,yellow [NOTICE] |@ You have already started the day!"));
                     isStarted = true;
@@ -72,11 +73,9 @@ public class FileDatabase {
         try {
             Scanner scanner = new Scanner(workFile);
             StringBuilder newFile = new StringBuilder();
-            int lineNum = 0;
             boolean isStarted = true;
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                lineNum++;
                 if (!line.startsWith(currentDate)) {
                     newFile.append(line);
                     newFile.append(System.lineSeparator());
@@ -157,5 +156,24 @@ public class FileDatabase {
             }
         }
         return map;
+    }
+
+    public String getCurrentDate(String currentFile, DateTime dateTime) {
+        String line = "";
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.MM.yyyy");
+        String date = dateTime.toString(formatter);
+        try {
+            File file = new File(currentFile);
+            Scanner scanner = new Scanner(file);
+            while(scanner.hasNextLine()) {
+                line = scanner.nextLine();
+                if (line.startsWith(date)) {
+                    break;
+                }
+            }
+        } catch (FileNotFoundException fne) {
+
+        }
+        return line;
     }
 }

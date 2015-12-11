@@ -7,14 +7,14 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import static org.fusesource.jansi.Ansi.*;
+import static org.fusesource.jansi.Ansi.ansi;
 
 /**
  * Created by vlado on 08.12.15.
+ * Incomer is the class for managing the income.
  */
 public class Incomer {
 
@@ -67,42 +67,20 @@ public class Incomer {
             case "month":
                 String file = utils.getFileForMonthAndYear(dateTime.getMonthOfYear(), dateTime.getYear());
                 HashMap<Integer, String[]> list = fdb.getDateList(file);
-                Iterator it = list.entrySet().iterator();
-                int sumHours = 0;
-                int sumMinutes = 0;
-                while (it.hasNext()) {
-                    Map.Entry<Integer, String[]> pair = (Map.Entry)it.next();
-                    if (pair.getValue().length == 3) {
-                        sumHours += Integer.parseInt(pair.getValue()[2].split(":")[0]);
-                        sumMinutes += Integer.parseInt(pair.getValue()[2].split(":")[1]);
-                    } else {
-                    }
-                }
-                double income = 0.0;
-                income += sumHours * rateIncome.doubleValue();
-                income += ((sumMinutes * 100.0) / 6000.0) * rateIncome.doubleValue();
+                double income = utils.calculateIncome(list, rateIncome);
                 System.out.println(String.format("\nYour income to date is: %.2f EUR", income));
                 break;
             case "year":
                 List<String> files = utils.getFilesForYear(dateTime.getYear());
                 list = fdb.getDateList(files);
-                it = list.entrySet().iterator();
-                sumHours = 0;
-                sumMinutes = 0;
-                while (it.hasNext()) {
-                    Map.Entry<Integer, String[]> pair = (Map.Entry)it.next();
-                    if (pair.getValue().length == 3) {
-                        sumHours += Integer.parseInt(pair.getValue()[2].split(":")[0]);
-                        sumMinutes += Integer.parseInt(pair.getValue()[2].split(":")[1]);
-                    } else {
-                    }
-                }
-                income = 0.0;
-                income += sumHours * rateIncome.doubleValue();
-                income += ((sumMinutes * 100.0) / 6000.0) * rateIncome.doubleValue();
+                income = utils.calculateIncome(list, rateIncome);
                 System.out.println(String.format("\nYour income to date is: %.2f EUR", income));
                 break;
             case "day":
+                String currentFile = utils.getFileForMonthAndYear(dateTime.getMonthOfYear(), dateTime.getYear());
+                String line = fdb.getCurrentDate(currentFile, dateTime);
+                income = utils.calculateIncome(line, rateIncome);
+                System.out.println(String.format("\nYour income for now is: %.2f EUR", income));
                 break;
         }
 
